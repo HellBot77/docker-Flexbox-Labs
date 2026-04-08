@@ -4,8 +4,7 @@ ARG TAG=latest
 RUN git clone https://github.com/prazzon/Flexbox-Labs.git && \
     cd Flexbox-Labs && \
     ([[ "$TAG" = "latest" ]] || git checkout ${TAG}) && \
-    rm -rf .git && \
-    sed -i '/const nextConfig/a\   output: "export",' next.config.ts
+    rm -rf .git
 
 FROM --platform=$BUILDPLATFORM oven/bun:alpine AS build
 
@@ -16,4 +15,4 @@ RUN bun ci && \
 
 FROM joseluisq/static-web-server
 
-COPY --from=build /Flexbox-Labs/out ./public
+COPY --from=build /Flexbox-Labs/dist ./public
